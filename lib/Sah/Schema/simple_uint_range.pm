@@ -1,4 +1,4 @@
-package Sah::Schema::simple_int_range;
+package Sah::Schema::simple_uint_range;
 
 # AUTHORITY
 # DATE
@@ -6,9 +6,9 @@ package Sah::Schema::simple_int_range;
 # VERSION
 
 our $schema = [str => {
-    summary => 'Simple integer range, e.g. 1-10 / -2-7',
-    match => qr/\A(?:-?[0-9]+)\s*-\s*(?:-?[0-9]+)\z/,
-    prefilters => ['IntRange::check_simple_int_range'],
+    summary => 'Simple unsigned integer range, e.g. 1-10',
+    match => qr/\A(?:[0-9]+)\s*-\s*(?:[0-9]+)\z/,
+    prefilters => ['IntRange::check_simple_uint_range'],
     examples => [
         {data=>'', valid=>0},
         {data=>'1', valid=>0},
@@ -18,8 +18,10 @@ our $schema = [str => {
         {data=>'1-2', valid=>1},
         {data=>'1 - 2', valid=>1},
         {data=>'0-100', valid=>1},
-        {data=>'-1-2', valid=>1},
-        {data=>'-10--1', valid=>1},
+        {data=>'-1-2', valid=>0,
+         summary=>'Negative'},
+        {data=>'-10--1', valid=>0,
+         summary=>'Negative'},
 
         {data=>'1-', valid=>0},
         {data=>'1-1.5', valid=>0, sumary=>'Float'},
